@@ -1,0 +1,22 @@
+version: 2.1
+
+jobs:
+  build:
+    working_directory: /var/www/html
+    steps:
+      - checkout  # Checkout the code from your repository
+      - run:
+          name: Deploy HTML project
+          command: |
+            # Copy your HTML project to the desired directory
+            cp -r . /var/www/html/
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - main  # Adjust this to your main branch name
