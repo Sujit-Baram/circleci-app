@@ -1,3 +1,4 @@
+
 version: 2.1
 
 jobs:
@@ -8,8 +9,10 @@ jobs:
       - run:
           name: Deploy HTML project
           command: |
-            # Copy your HTML project to the desired directory
-            cp -r . /var/www/html/
+            # Copy your HTML project to the remote server using SSH
+            scp -r . ubuntu@18.188.85.211:/var/www/html/
+          environment:
+            SSH_KEY: $SSH_KEY  # Define your SSH key as an environment variable
 
 workflows:
   version: 2
