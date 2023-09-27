@@ -1,25 +1,34 @@
-
 version: 2.1
 
 jobs:
-  build:
-    working_directory: /var/www/html
+  build_and_deploy:
+    docker:
+      - image: nginx:latest
+
     steps:
-      - checkout  # Checkout the code from your repository
+      - checkout
+
+      # Add a step to install scp
       - run:
-          name: Deploy HTML project
+          name: Install SCP
+          command: apt-get update && apt-get install -y openssh-client
+
+      - run:
+          name: Deploy to AWS
           command: |
-            # Copy your HTML project to the remote server using SSH
-            scp -r . ubuntu@18.188.85.211:/var/www/html/
-          environment:
-            SSH_KEY: $SSH_KEY  # Define your SSH key as an environment variable
+            # Set up SSH key for authentication
+            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+
+            # Copy your HTML/CSS project to AWS server using SCP
+            scp -r . ubuntu@18.224.181.85:/var/www/html/
 
 workflows:
   version: 2
   build_and_deploy:
     jobs:
-      - build:
+      - build_and_deploy:
           filters:
             branches:
               only:
-                - main  # Adjust this to your main branch name
+                - main
