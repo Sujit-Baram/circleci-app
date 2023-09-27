@@ -20,7 +20,7 @@ jobs:
             echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
 
-            # Copy your HTML/CSS project to AWS server using SCP
+            # Copy your HTML/CSS project to AWS server using SCP #
             scp -r . ubuntu@18.224.181.85:/var/www/html/
 
 workflows:
